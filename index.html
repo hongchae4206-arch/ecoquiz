@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌱 생태와 환경 퀴즈 게임</title>
+<style>
+  body {
+    font-family: "Pretendard", sans-serif;
+    background-color: #e9f7ef;
+    color: #2e4d36;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #1e7e34;
+  }
+  .quiz-box {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    max-width: 400px;
+    margin: 30px auto;
+  }
+  button {
+    background: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 15px;
+  }
+  button:hover {
+    background: #218838;
+  }
+  .option {
+    display: block;
+    background: #d4edda;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  .option:hover {
+    background: #c3e6cb;
+  }
+</style>
+</head>
+<body>
+
+<h1>🌿 생태와 환경 퀴즈 🌿</h1>
+
+<div class="quiz-box">
+  <p id="question">문제가 여기에 표시됩니다.</p>
+  <div id="options"></div>
+  <button id="nextBtn">다음</button>
+  <p id="score"></p>
+</div>
+
+<script>
+const quizData = [
+  { q: "1. 지구 평균 기온 상승의 주요 원인은?", a: ["산성비", "온실가스 증가", "태양 활동 감소", "지진 활동 증가"], correct: 1 },
+  { q: "2. 플라스틱 쓰레기가 바다로 유입되면 가장 큰 피해를 받는 생물은?", a: ["물고기", "해조류", "산호", "조류"], correct: 0 },
+  { q: "3. 탄소중립이란 무엇을 의미할까?", a: ["탄소 배출을 완전히 막는 것", "배출한 탄소만큼 흡수·제거하여 균형 맞추는 것", "탄소를 모아 저장하는 것", "탄소를 연료로 사용하는 것"], correct: 1 },
+  { q: "4. 일회용품 사용을 줄이기 위한 가장 쉬운 방법은?", a: ["재활용품을 버린다", "다회용 컵과 용기를 사용한다", "더 자주 외식한다", "비닐봉투를 모은다"], correct: 1 },
+  { q: "5. 멸종 위기 동물의 보호가 중요한 이유는?", a: ["관광 수입 증가", "생태계의 균형 유지", "동물원 수 증가", "사람의 건강 개선"], correct: 1 },
+  { q: "6. ‘기후 변화’의 주된 영향이 아닌 것은?", a: ["해수면 상승", "폭염 증가", "빙하 확대", "가뭄 발생"], correct: 2 },
+  { q: "7. 나무가 이산화탄소를 흡수하는 과정은?", a: ["호흡", "광합성", "발아", "증산"], correct: 1 },
+  { q: "8. 지구 온난화 방지를 위한 개인의 실천이 아닌 것은?", a: ["대중교통 이용", "전기 절약", "무분별한 소비", "분리수거"], correct: 2 },
+  { q: "9. ‘탄소 발자국’이란?", a: ["운동할 때 생기는 땀의 양", "개인이 배출하는 이산화탄소의 양", "숲의 넓이", "자동차 연비"], correct: 1 },
+  { q: "10. 환경 보호의 기본 원칙 중 하나인 ‘3R’에 해당하지 않는 것은?", a: ["Reuse", "Recycle", "Reduce", "Replace"], correct: 3 }
+];
+
+let current = 0;
+let score = 0;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const nextBtn = document.getElementById("nextBtn");
+const scoreEl = document.getElementById("score");
+
+function loadQuestion() {
+  const q = quizData[current];
+  questionEl.textContent = q.q;
+  optionsEl.innerHTML = "";
+  q.a.forEach((option, index) => {
+    const btn = document.createElement("div");
+    btn.className = "option";
+    btn.textContent = option;
+    btn.onclick = () => selectAnswer(index);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(selected) {
+  const correct = quizData[current].correct;
+  if (selected === correct) score++;
+  Array.from(optionsEl.children).forEach((child, i) => {
+    child.style.pointerEvents = "none";
+    child.style.background = (i === correct) ? "#90EE90" : "#f8d7da";
+  });
+}
+
+nextBtn.onclick = () => {
+  current++;
+  if (current < quizData.length) {
+    loadQuestion();
+  } else {
+    questionEl.textContent = "🎉 퀴즈 완료!";
+    optionsEl.innerHTML = "";
+    nextBtn.style.display = "none";
+    scoreEl.textContent = `당신의 점수: ${score} / ${quizData.length}`;
+  }
+};
+
+loadQuestion();
+</script>
+
+</body>
+</html>
